@@ -199,6 +199,8 @@ function Dashboard() {
 
   const handleRefresh = () => {
     setIsRefreshing(true);
+    setIdentity(getStoredUserIdentity());
+    setNow(new Date());
     setLastUpdated(new Date());
     window.setTimeout(() => setIsRefreshing(false), 650);
   };
