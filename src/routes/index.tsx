@@ -19,7 +19,7 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import { Button } from "@/components/ui/button";
@@ -397,7 +397,7 @@ function Dashboard() {
   );
 }
 
-function DataList({ title, action, children }: { title: string; action: string; children: React.ReactNode }) {
+function DataList({ title, action, children }: { title: string; action: string; children: ReactNode }) {
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
