@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" role="img" aria-labelledby="title desc">
+  <title id="title">AfiliPro IA</title>
+  <desc id="desc">Logo AfiliPro IA com seta de crescimento</desc>
+  <rect width="520" height="260" rx="24" fill="#050505"/>
+  <g fill="#FFC400">
+    <path d="M115 150 182 55q7-10 20-10h22q13 0 19 12l36 69-35 20-27-47-24 34-27 47z"/>
+    <path d="M104 166c74-35 155-34 233-72 37-18 66-38 101-65l-18 54 42-10-79 67 13-31c-74 43-150 50-220 55z"/>
+  </g>
+  <text x="42" y="222" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" font-style="italic" fill="#FFFFFF">Afili</text>
+  <text x="192" y="222" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" font-style="italic" fill="#FFC400">Pro IA</text>
+</svg>
