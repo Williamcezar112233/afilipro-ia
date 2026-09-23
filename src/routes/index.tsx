@@ -24,7 +24,7 @@ import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YA
 
 import { Button } from "@/components/ui/button";
 
-const AFILIPRO_LOGO = "/afilipro-logo.webp";
+const AFILIPRO_LOGO = "/afilipro-logo.svg";
 
 
 
@@ -71,7 +71,7 @@ const nav: Array<[LucideIcon, string]> = [
 function Logo() {
   return (
     <div className="flex items-center gap-2 font-bold text-foreground">
-      <img src={AFILIPRO_LOGO} alt="AFILIPRO IA" className="h-10 w-28 object-contain" />
+      <img src={AFILIPRO_LOGO} alt="AFILIPRO IA" className="h-9 w-40 object-contain object-left" />
     </div>
   );
 }
