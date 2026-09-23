@@ -42,16 +42,7 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
-// Dashboard inicial: métricas zeradas e saudação dinâmica; valores reais entram posteriormente via dados da conta\nconst chartData = [
-  { day: "Seg", value: 0 },
-  { day: "Ter", value: 0 },
-  { day: "Qua", value: 0 },
-  { day: "Qui", value: 0 },
-  { day: "Sex", value: 0 },
-  { day: "Sáb", value: 0 },
-  { day: "Dom", value: 0 },
-];
-
+// Dashboard inicial: métricas zeradas e saudação dinâmica; valores reais entram posteriormente via dados da conta
 const links: Array<[string, string, string]> = [
   ["Gerador de Links", "0 cliques · 0 conv.", "R$ 0,00"],
   ["Encurtador de URL", "0 cliques · 0 conv.", "R$ 0,00"],
