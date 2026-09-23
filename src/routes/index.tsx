@@ -12,6 +12,7 @@ import {
   Settings,
   RefreshCw,
   Sun,
+  Moon,
   ShieldCheck,
   User,
   Users,
@@ -177,13 +178,30 @@ function Dashboard() {
   const [period, setPeriod] = useState("Mês");
   const [identity, setIdentity] = useState(() => ({ email: "", name: "" }));
   const [now, setNow] = useState(() => new Date());
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(() => new Date());
 
   useEffect(() => {
     setIdentity(getStoredUserIdentity());
+    const savedTheme = window.localStorage.getItem("afilipro-theme");
+    if (savedTheme === "light" || savedTheme === "dark") setTheme(savedTheme);
 
     const timer = window.setInterval(() => setNow(new Date()), 60_000);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    document.documentElement.style.colorScheme = theme;
+    window.localStorage.setItem("afilipro-theme", theme);
+  }, [theme]);
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setLastUpdated(new Date());
+    window.setTimeout(() => setIsRefreshing(false), 650);
+  };
 
   const greeting = useMemo(() => {
     const hour = now.getHours();
@@ -195,6 +213,17 @@ function Dashboard() {
 
   const displayName = useMemo(() => formatName(identity), [identity]);
   const periodOptions = ["Semana", "Mês", "Ano"];
+
+  const periodConfig = useMemo(() => {
+    if (period === "Semana") return { summary: "Resumo da Semana", labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"] };
+    if (period === "Ano") return { summary: "Resumo do Ano", labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"] };
+    return { summary: "Resumo do Mês", labels: ["Sem 1", "Sem 2", "Sem 3", "Sem 4", "Sem 5"] };
+  }, [period]);
+
+  const periodChartData = useMemo(
+    () => periodConfig.labels.map((day) => ({ day, value: 0 })),
+    [periodConfig],
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -213,8 +242,14 @@ function Dashboard() {
           </div>
 
           <div className="ml-auto flex items-center gap-1">
-            <Button variant="ghost" size="icon" aria-label="Tema">
-              <Sun className="size-4" />
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"}
+              title={theme === "dark" ? "Tema claro" : "Tema escuro"}
+              onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
+            >
+              {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
             </Button>
             <Button variant="ghost" size="icon" aria-label="Configurações">
               <Settings className="size-4" />
@@ -235,7 +270,10 @@ function Dashboard() {
               <h1 className="text-xl font-semibold">
                 {greeting}, {displayName}
               </h1>
-              <p className="mt-1 text-xs text-muted-foreground">Resumo de afiliado</p>
+              <p className="mt-1 text-xs text-muted-foreground">{periodConfig.summary}</p>
+              <span className="mt-1 block text-[10px] text-muted-foreground">
+                Atualizado às {lastUpdated.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+              </span>
             </div>
 
             <div className="flex flex-wrap items-center gap-1 rounded-md bg-card p-1">
@@ -250,9 +288,9 @@ function Dashboard() {
                   {option}
                 </Button>
               ))}
-              <Button variant="ghost" size="sm">
-                <RefreshCw className="size-3" />
-                Atualizar
+              <Button variant="ghost" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
+                <RefreshCw className={`size-3 ${isRefreshing ? "animate-spin" : ""}`} />
+                {isRefreshing ? "Atualizando..." : "Atualizar"}
               </Button>
             </div>
           </div>
@@ -276,7 +314,7 @@ function Dashboard() {
 
               <div className="h-64 w-full lg:h-72">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData} margin={{ left: -28, right: 5 }}>
+                  <AreaChart data={periodChartData} margin={{ left: -28, right: 5 }}>
                     <defs>
                       <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor="var(--dashboard-line)" stopOpacity={0.35} />
